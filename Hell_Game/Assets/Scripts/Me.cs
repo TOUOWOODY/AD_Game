@@ -21,7 +21,7 @@ public class Me : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.name == "Bomb" || collision.name == "AD" || collision.name == "AD_SKIP")
+        if(collision.name == "Bomb" || collision.name == "AD" || collision.name == "AD2" || collision.name == "AD_SKIP")
         {
             //Ingame.Instance.Start_Panel.SetActive(true);
         }

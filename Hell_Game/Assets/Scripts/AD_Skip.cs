@@ -83,6 +83,8 @@ public class AD_Skip : MonoBehaviour
 
             yield return new WaitForSeconds(5f);
             StartCoroutine(Bomb.GetComponent<Bomb>().Random_Attack(70, 0.1f));
+            yield return new WaitForSeconds(26f);
+            StartCoroutine(bomb_Move4());
             yield break;
         }
 
@@ -95,10 +97,13 @@ public class AD_Skip : MonoBehaviour
 
     public IEnumerator bomb_Move4()
     {
-        transform.localScale -= new Vector3(10, 5, 0);
+        transform.localScale -= new Vector3(4, 2, 0);
 
-
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, 10f);
+        if (this.transform.localScale.x < 10)
+        {
+            this.gameObject.SetActive(false);
+            yield break;
+        }
         yield return new WaitForSeconds(0.01f);
         StartCoroutine(bomb_Move4());
     }
@@ -126,6 +131,8 @@ public class AD_Skip : MonoBehaviour
 
         StartCoroutine(Attact0(finsh_Time, speed));
     }
+
+    
 
     private void Object_Dequeue(GameObject prefab, GameObject Parents, string Name, Vector3 position)
     {

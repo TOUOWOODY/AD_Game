@@ -16,10 +16,12 @@ public class Bomb : MonoBehaviour
 
     [SerializeField]
     private GameObject AD_Skip;
+
+    private SpriteRenderer bomb_color;
     void Start()
     {
         Manager = Ingame.Instance;
-
+        bomb_color = this.gameObject.GetComponent<SpriteRenderer>();
         target = Ingame.Instance.Me.transform.localPosition;
         count = 5;
         StartCoroutine(bomb_Move0());
@@ -29,9 +31,9 @@ public class Bomb : MonoBehaviour
     public IEnumerator bomb_Move0()
     {
         count -= Time.deltaTime;
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, 15f);
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, 9f);
 
-        if(transform.localPosition == target)
+        if (transform.localPosition == target)
         {
             target = Ingame.Instance.Me.transform.localPosition;
         }
@@ -157,7 +159,7 @@ public class Bomb : MonoBehaviour
         if ((int)Ingame.Instance.time == 25)
         {
             transform.localScale = new Vector3(100, 100, 0);
-            transform.localPosition = new Vector3(500, -450, 0);
+            transform.localPosition = new Vector3(450, -500, 0);
         }
         if ((int)Ingame.Instance.time == 26)
         {
@@ -202,6 +204,30 @@ public class Bomb : MonoBehaviour
         StartCoroutine(bomb_Move6());
     }
 
+    public IEnumerator bomb_Move7()
+    {
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(0, 0, 0), 20f);
+
+        if (transform.localScale.x < 200 )
+        {
+            transform.localScale += new Vector3(1, 1, 0);
+        }
+
+        bomb_color.color += new Color(1 / 255f, 0 / 255f, 0 / 255f);
+
+        if (Manager.time > 75)
+        {
+            StartCoroutine(Attact_AD2(100, 0.5f));
+            yield return new WaitForSeconds(5f);
+            StartCoroutine(Random_Attack(100, 0.1f));
+            StartCoroutine(Finish_Move(100));
+            yield break;
+        }
+
+        yield return new WaitForSeconds(0.01f);
+        StartCoroutine(bomb_Move7());
+    }
+
     public IEnumerator Follow_Move(int finish_Time)
     {
         transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, 7f);
@@ -213,11 +239,31 @@ public class Bomb : MonoBehaviour
 
         if (Manager.time > finish_Time)
         {
+            StartCoroutine(bomb_Move7());
             yield break;
+
         }
 
         yield return new WaitForSeconds(0.01f);
         StartCoroutine(Follow_Move(finish_Time));
+    }
+
+    public IEnumerator Finish_Move(int finish_Time)
+    {
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, 50f);
+
+        if (transform.localPosition == target)
+        {
+            target = new Vector3(UnityEngine.Random.Range(-500, 500), UnityEngine.Random.Range(-1000, 1000), 0);
+        }
+
+        if (Manager.time > finish_Time)
+        {
+            yield break;
+        }
+
+        yield return new WaitForSeconds(0.01f);
+        StartCoroutine(Finish_Move(finish_Time));
     }
 
 
@@ -290,6 +336,28 @@ public class Bomb : MonoBehaviour
         yield return new WaitForSeconds(speed);
 
         StartCoroutine(Random_Attack(finish_Time, speed));
+    }
+
+    IEnumerator Attact_AD2(int finish_Time, float speed)
+    {
+        GameObject ad2 = Manager.object_Pooling.AD2_OP.Dequeue();
+
+        Object_Dequeue(ad2, Manager.AD_Parent, "AD2", transform.localPosition);
+
+        ad2.GetComponent<AD2>().Enemy = Manager.Me.transform.localPosition;
+
+        if (!this.gameObject.activeSelf)
+        {
+            yield break;
+        }
+
+        if ((int)Ingame.Instance.time > finish_Time)
+        {
+            yield break;
+        }
+        yield return new WaitForSeconds(speed);
+
+        StartCoroutine(Attact_AD2(finish_Time, speed));
     }
 
 
