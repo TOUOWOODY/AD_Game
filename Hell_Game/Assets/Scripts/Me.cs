@@ -4,51 +4,165 @@ using UnityEngine;
 
 public class Me : MonoBehaviour
 {
-    private Vector3 click_pos;
-
-    private Vector3 target;
-
     private bool move = false;
 
+    private bool up = true;
+    private bool down = true;
+    private bool right = true;
+    private bool left = true;
+
+    private bool up_wall = false;
+    private bool down_wall = false;
+    private bool right_wall = false;
+    private bool left_wall = false;
+
     [SerializeField]
-    private GameObject Direction;
+    private List<GameObject> wall = new List<GameObject>();
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.name == "Bomb" || collision.name == "AD" || collision.name == "AD_SKIP")
         {
-            Ingame.Instance.Start_Panel.SetActive(true);
+            //Ingame.Instance.Start_Panel.SetActive(true);
+        }
+        for(int i = 0; i < 4; i++)
+        {
+            if (collision.gameObject == wall[i].gameObject)
+            {
+                switch(i)
+                {
+                    case 0:
+                        up_wall = true;
+                        break;
+                    case 1:
+                        down_wall = true;
+                        break;
+                    case 2:
+                        right_wall = true;
+                        break;
+                    case 3:
+                        left_wall = true;
+                        break;
+                }
+            }
         }
     }
 
-    void FixedUpdate()
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (Input.GetMouseButtonDown(0))
+        for (int i = 0; i < 4; i++)
         {
-            move = true;
-            //click_pos = Direction.transform.localPosition;
-            click_pos = Input.mousePosition;
-            StartCoroutine(Moving());
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            move = false;
+            if (collision.gameObject == wall[i].gameObject)
+            {
+                switch (i)
+                {
+                    case 0:
+                        up_wall = false;
+                        break;
+                    case 1:
+                        down_wall = false;
+                        break;
+                    case 2:
+                        right_wall = false;
+                        break;
+                    case 3:
+                        left_wall = false;
+                        break;
+                }
+            }
         }
     }
 
-    IEnumerator Moving()
+    IEnumerator UP()
     {
-        //target = click_pos + Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        target = Input.mousePosition - click_pos;
-
-        Debug.Log(target);
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, target * 100, 10f);
-
-        if (!move)
+        if (!up || up_wall)
         {
             yield break;
         }
+        transform.Translate(0, 0.05f, 0);
         yield return new WaitForSeconds(0.01f);
-        StartCoroutine(Moving());
+        StartCoroutine(UP());
+    }
+
+    IEnumerator DOWN()
+    {
+        if (!down || down_wall)
+        {
+            yield break;
+        }
+        transform.Translate(0, -0.05f, 0);
+        yield return new WaitForSeconds(0.01f);
+        StartCoroutine(DOWN());
+    }
+
+    IEnumerator RIGHT()
+    {
+        if (!right || right_wall)
+        {
+            yield break;
+        }
+        transform.Translate(0.05f, 0, 0);
+
+        yield return new WaitForSeconds(0.01f);
+        StartCoroutine(RIGHT());
+    }
+
+    IEnumerator LEFT()
+    {
+        if (!left || left_wall)
+        {
+            yield break;
+        }
+
+        transform.Translate(-0.05f, 0, 0);
+
+        yield return new WaitForSeconds(0.01f);
+        StartCoroutine(LEFT());
+    }
+
+
+
+
+    public void Click_UP_Btn()
+    {
+        up = true;
+        StartCoroutine(UP());
+    }
+    public void Stop_UP()
+    {
+        up = false;
+    }
+
+
+    public void Click_DOWN_Btn()
+    {
+        down = true;
+        StartCoroutine(DOWN());
+    }
+    public void Stop_DOWN()
+    {
+        down = false;
+    }
+
+
+    public void Click_RIGHT_Btn()
+    {
+        right = true;
+        StartCoroutine(RIGHT());
+    }
+    public void Stop_RIGHT()
+    {
+        right = false;
+    }
+
+
+    public void Click_LEFT_Btn()
+    {
+        left = true;
+        StartCoroutine(LEFT());
+    }
+    public void Stop_LEFT()
+    {
+        left = false;
     }
 }

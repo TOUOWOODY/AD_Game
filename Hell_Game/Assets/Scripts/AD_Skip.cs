@@ -7,19 +7,20 @@ public class AD_Skip : MonoBehaviour
     private Ingame Manager;
     private Vector3 target;
 
-    private float attack_speed;
+
+    public GameObject Bomb;
     public void Initialize()
     {
         Manager = Ingame.Instance;
         target = Ingame.Instance.Me.transform.localPosition;
-        attack_speed = 0.01f;
-        StartCoroutine(Attact0());
+        StartCoroutine(Attact0(35, 0.01f));
+        StartCoroutine(bomb_Move0());
     }
 
 
     public IEnumerator bomb_Move0()
     {
-        transform.localScale += new Vector3(10, 5,0);
+        transform.localScale += new Vector3(4, 2,0);
 
         if (transform.localScale.x > 1100)
         {
@@ -43,7 +44,7 @@ public class AD_Skip : MonoBehaviour
         if(transform.localPosition.y < -900)
         {
             yield return new WaitForSeconds(2f);
-            target = Manager.Spot[1].transform.localPosition;
+            target = Manager.Spot[3].transform.localPosition;
 
             StartCoroutine(bomb_Move2());
             yield break;
@@ -59,6 +60,10 @@ public class AD_Skip : MonoBehaviour
 
         if (transform.localPosition == target)
         {
+            yield return new WaitForSeconds(1f);
+
+            target = new Vector3(0, 0, 0);
+            StartCoroutine(bomb_Move3());
             yield break;
         }
 
@@ -66,10 +71,42 @@ public class AD_Skip : MonoBehaviour
         StartCoroutine(bomb_Move2());
     }
 
-
-
-    IEnumerator Attact0()
+    public IEnumerator bomb_Move3()
     {
+        transform.localScale -= new Vector3(10, 5, 0);
+
+        if (transform.localScale.x < 500)
+        {
+            Debug.LogError("ATTACK");
+            StartCoroutine(Attact0(60, 0.1f));
+            StartCoroutine(Bomb.GetComponent<Bomb>().Follow_Move(70));
+
+            yield return new WaitForSeconds(5f);
+            StartCoroutine(Bomb.GetComponent<Bomb>().Random_Attack(70, 0.1f));
+            yield break;
+        }
+
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, 10f);
+
+        yield return new WaitForSeconds(0.01f);
+        StartCoroutine(bomb_Move3());
+    }
+
+
+    public IEnumerator bomb_Move4()
+    {
+        transform.localScale -= new Vector3(10, 5, 0);
+
+
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, 10f);
+        yield return new WaitForSeconds(0.01f);
+        StartCoroutine(bomb_Move4());
+    }
+
+
+    IEnumerator Attact0(int finsh_Time, float speed)
+    {
+
         GameObject ad = Manager.object_Pooling.AD_OP.Dequeue();
 
         Object_Dequeue(ad, Manager.AD_Parent, "AD", transform.localPosition);
@@ -81,18 +118,14 @@ public class AD_Skip : MonoBehaviour
             yield break;
         }
 
-        if ((int)Ingame.Instance.time == 35)
+        if ((int)Ingame.Instance.time == finsh_Time)
         {
-            StartCoroutine(bomb_Move0());
             yield break;
         }
-        yield return new WaitForSeconds(attack_speed);
+        yield return new WaitForSeconds(speed);
 
-        StartCoroutine(Attact0());
+        StartCoroutine(Attact0(finsh_Time, speed));
     }
-
-
-
 
     private void Object_Dequeue(GameObject prefab, GameObject Parents, string Name, Vector3 position)
     {

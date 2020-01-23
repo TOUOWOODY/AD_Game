@@ -83,15 +83,15 @@ public class Bomb : MonoBehaviour
     {
         count += Time.deltaTime;
 
-        if (count > 2f && count <= 2.5f)
+        if (count > 2f && count <= 3f)
         {
-            transform.Translate(0, 0.1f, 0);
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, Ingame.Instance.Spot[1].transform.localPosition, 15f);
         }
-        else if (count > 2.5f && count <= 3.5f)
+        else if (count > 3f && count <= 5f)
         {
-            transform.Translate(0, -0.1f, 0);
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, Ingame.Instance.Spot[0].transform.localPosition, 15f);
         }
-        else if (count >= 4)
+        else if (count >= 5.2f)
         {
             StartCoroutine(bomb_Move4());
             yield break;
@@ -103,13 +103,12 @@ public class Bomb : MonoBehaviour
 
     public IEnumerator bomb_Move4()
     {
-        count += Time.deltaTime;
         if(transform.localScale.x > 200)
         {
-            transform.localScale -= new Vector3(10, 10, 0);
+            transform.localScale -= new Vector3(20, 20, 0);
         }
 
-        if (transform.localPosition == Ingame.Instance.Spot[0].transform.localPosition)
+        if (transform.localPosition == Ingame.Instance.Spot[2].transform.localPosition)
         {
             count = 0;
             attack_speed = 0.2f;
@@ -119,7 +118,7 @@ public class Bomb : MonoBehaviour
         }
         else
         {
-            transform.localPosition = Vector3.MoveTowards(transform.localPosition, Ingame.Instance.Spot[0].transform.localPosition, 10f);
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, Ingame.Instance.Spot[2].transform.localPosition, 10f);
         }
 
         yield return new WaitForSeconds(0.01f);
@@ -158,14 +157,14 @@ public class Bomb : MonoBehaviour
         if ((int)Ingame.Instance.time == 25)
         {
             transform.localScale = new Vector3(100, 100, 0);
-            transform.localPosition = new Vector3(500, -500, 0);
+            transform.localPosition = new Vector3(500, -450, 0);
         }
         if ((int)Ingame.Instance.time == 26)
         {
             transform.localScale = new Vector3(1000, 1000, 0);
             transform.localPosition = new Vector3(0, 0, 0);
         }
-        if ((int)Ingame.Instance.time == 29)
+        if ((int)Ingame.Instance.time == 28)
         {
             transform.localPosition = new Vector3(0, 0, 0);
             attack_speed = 0.1f;
@@ -201,6 +200,24 @@ public class Bomb : MonoBehaviour
 
         yield return new WaitForSeconds(0.01f);
         StartCoroutine(bomb_Move6());
+    }
+
+    public IEnumerator Follow_Move(int finish_Time)
+    {
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, 7f);
+
+        if (transform.localPosition == target)
+        {
+            target = Ingame.Instance.Me.transform.localPosition;
+        }
+
+        if (Manager.time > finish_Time)
+        {
+            yield break;
+        }
+
+        yield return new WaitForSeconds(0.01f);
+        StartCoroutine(Follow_Move(finish_Time));
     }
 
 
@@ -251,6 +268,30 @@ public class Bomb : MonoBehaviour
 
         StartCoroutine(Attact1());
     }
+
+    public IEnumerator Random_Attack(int finish_Time, float speed)
+    {
+        GameObject ad = Manager.object_Pooling.AD_OP.Dequeue();
+
+        Object_Dequeue(ad, Manager.AD_Parent, "AD", transform.localPosition);
+
+        ad.GetComponent<AD>().Enemy = new Vector3(UnityEngine.Random.Range(-1000, 1000), UnityEngine.Random.Range(-2000, 2000), 0);
+
+        if (!this.gameObject.activeSelf)
+        {
+            yield break;
+        }
+
+        if ((int)Ingame.Instance.time > finish_Time)
+        {
+            yield break;
+        }
+
+        yield return new WaitForSeconds(speed);
+
+        StartCoroutine(Random_Attack(finish_Time, speed));
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
