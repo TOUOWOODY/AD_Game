@@ -28,7 +28,7 @@ public class AD_Skip : MonoBehaviour
             yield break;
         }
 
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move0());
     }
 
@@ -50,7 +50,7 @@ public class AD_Skip : MonoBehaviour
             yield break;
         }
 
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move1());
     }
 
@@ -67,7 +67,7 @@ public class AD_Skip : MonoBehaviour
             yield break;
         }
 
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move2());
     }
 
@@ -90,7 +90,7 @@ public class AD_Skip : MonoBehaviour
 
         transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, 10f);
 
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move3());
     }
 
@@ -104,7 +104,7 @@ public class AD_Skip : MonoBehaviour
             this.gameObject.SetActive(false);
             yield break;
         }
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move4());
     }
 

@@ -45,7 +45,7 @@ public class Bomb : MonoBehaviour
             yield break;
         }
 
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move0());
     }
 
@@ -77,7 +77,7 @@ public class Bomb : MonoBehaviour
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(0,0,0), 10f);
         }
 
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move1());
     }
 
@@ -99,7 +99,7 @@ public class Bomb : MonoBehaviour
             yield break;
         }
 
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move3());
     }
 
@@ -123,7 +123,7 @@ public class Bomb : MonoBehaviour
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, Ingame.Instance.Spot[2].transform.localPosition, 10f);
         }
 
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move4());
     }
 
@@ -179,7 +179,7 @@ public class Bomb : MonoBehaviour
         transform.localPosition = Vector3.MoveTowards(transform.localPosition, Ingame.Instance.Me.transform.localPosition, 5f);
 
 
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move5());
     }
 
@@ -200,7 +200,7 @@ public class Bomb : MonoBehaviour
             yield break;
         }
 
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move6());
     }
 
@@ -224,7 +224,7 @@ public class Bomb : MonoBehaviour
             yield break;
         }
 
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move7());
     }
 
@@ -244,7 +244,7 @@ public class Bomb : MonoBehaviour
 
         }
 
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(Follow_Move(finish_Time));
     }
 
@@ -262,7 +262,7 @@ public class Bomb : MonoBehaviour
             yield break;
         }
 
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(Finish_Move(finish_Time));
     }
 
