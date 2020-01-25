@@ -79,8 +79,8 @@ public class Me : MonoBehaviour
         {
             yield break;
         }
-        transform.Translate(0, 0.05f, 0);
-        yield return new WaitForSeconds(0.01f);
+        transform.Translate(0, 0.1f, 0);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(UP());
     }
 
@@ -90,8 +90,8 @@ public class Me : MonoBehaviour
         {
             yield break;
         }
-        transform.Translate(0, -0.05f, 0);
-        yield return new WaitForSeconds(0.01f);
+        transform.Translate(0, -0.1f, 0);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(DOWN());
     }
 
@@ -101,9 +101,9 @@ public class Me : MonoBehaviour
         {
             yield break;
         }
-        transform.Translate(0.05f, 0, 0);
+        transform.Translate(0.1f, 0, 0);
 
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(RIGHT());
     }
 
@@ -114,9 +114,9 @@ public class Me : MonoBehaviour
             yield break;
         }
 
-        transform.Translate(-0.05f, 0, 0);
+        transform.Translate(-0.1f, 0, 0);
 
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.005f);
         StartCoroutine(LEFT());
     }
 

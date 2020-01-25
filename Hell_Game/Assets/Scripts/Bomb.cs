@@ -8,8 +8,6 @@ public class Bomb : MonoBehaviour
 
     private Vector3 target;
 
-    private float count = 0;
-
     private Ingame Manager;
 
     private float attack_speed;
@@ -23,22 +21,20 @@ public class Bomb : MonoBehaviour
         Manager = Ingame.Instance;
         bomb_color = this.gameObject.GetComponent<SpriteRenderer>();
         target = Ingame.Instance.Me.transform.localPosition;
-        count = 5;
         StartCoroutine(bomb_Move0());
     }
 
 
     public IEnumerator bomb_Move0()
     {
-        count -= Time.deltaTime;
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, 9f);
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, 15f);
 
         if (transform.localPosition == target)
         {
             target = Ingame.Instance.Me.transform.localPosition;
         }
 
-        if(count <= 0)
+        if(Manager.time >= 5)
         {
             stop = false;
             StartCoroutine(bomb_Move1());
@@ -57,24 +53,23 @@ public class Bomb : MonoBehaviour
         {
             if(!stop)
             {
-                transform.localScale += new Vector3(5f, 5f, 0);
+                transform.localScale += new Vector3(10f, 10f, 0);
 
                 if (transform.localScale.x > 300)
                 {
-                    transform.localScale += new Vector3(20f, 20f, 0);
+                    transform.localScale += new Vector3(40f, 40f, 0);
                 }
             }
             else
             {
                 stop = false;
-                count = 0;
                 StartCoroutine(bomb_Move3());
                 yield break;
             }
         }
         else
         {
-            transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(0,0,0), 10f);
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(0,0,0), 20f);
         }
 
         yield return new WaitForSeconds(0.005f);
@@ -83,17 +78,15 @@ public class Bomb : MonoBehaviour
 
     public IEnumerator bomb_Move3()
     {
-        count += Time.deltaTime;
-
-        if (count > 2f && count <= 3f)
+        if (Manager.time > 8f && Manager.time <= 9f)
         {
-            transform.localPosition = Vector3.MoveTowards(transform.localPosition, Ingame.Instance.Spot[1].transform.localPosition, 15f);
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, Ingame.Instance.Spot[1].transform.localPosition, 30f);
         }
-        else if (count > 3f && count <= 5f)
+        else if (Manager.time > 9f && Manager.time <= 11f)
         {
-            transform.localPosition = Vector3.MoveTowards(transform.localPosition, Ingame.Instance.Spot[0].transform.localPosition, 15f);
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, Ingame.Instance.Spot[0].transform.localPosition, 30f);
         }
-        else if (count >= 5.2f)
+        else if (Manager.time >= 12f)
         {
             StartCoroutine(bomb_Move4());
             yield break;
@@ -107,12 +100,11 @@ public class Bomb : MonoBehaviour
     {
         if(transform.localScale.x > 200)
         {
-            transform.localScale -= new Vector3(20, 20, 0);
+            transform.localScale -= new Vector3(40, 40, 0);
         }
 
         if (transform.localPosition == Ingame.Instance.Spot[2].transform.localPosition)
         {
-            count = 0;
             attack_speed = 0.2f;
             StartCoroutine(Attact0());
             StartCoroutine(bomb_Move5());
@@ -120,7 +112,7 @@ public class Bomb : MonoBehaviour
         }
         else
         {
-            transform.localPosition = Vector3.MoveTowards(transform.localPosition, Ingame.Instance.Spot[2].transform.localPosition, 10f);
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, Ingame.Instance.Spot[2].transform.localPosition, 15f);
         }
 
         yield return new WaitForSeconds(0.005f);
@@ -132,7 +124,7 @@ public class Bomb : MonoBehaviour
     {
         if (transform.localScale.x < 400)
         {
-            transform.localScale += new Vector3(10, 10, 0);
+            transform.localScale += new Vector3(20, 20, 0);
         }
 
         if ((int)Ingame.Instance.time == 20)
@@ -176,7 +168,7 @@ public class Bomb : MonoBehaviour
             yield break;
         }
 
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, Ingame.Instance.Me.transform.localPosition, 5f);
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, Ingame.Instance.Me.transform.localPosition, 10f);
 
 
         yield return new WaitForSeconds(0.005f);
@@ -187,14 +179,14 @@ public class Bomb : MonoBehaviour
 
     public IEnumerator bomb_Move6()
     {
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(0, 900, 0), 5f);
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(0, 900, 0), 10f);
 
         if(transform.localScale.x > 100)
         {
-            transform.localScale -= new Vector3(10, 10, 0);
+            transform.localScale -= new Vector3(20, 20, 0);
         }
 
-        if (transform.localPosition == Vector3.MoveTowards(transform.localPosition, new Vector3(0, 900, 0), 5f))
+        if (transform.localPosition == Vector3.MoveTowards(transform.localPosition, new Vector3(0, 900, 0), 10f))
         {
             AD_Skip.GetComponent<AD_Skip>().Initialize();
             yield break;
@@ -206,14 +198,14 @@ public class Bomb : MonoBehaviour
 
     public IEnumerator bomb_Move7()
     {
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(0, 0, 0), 20f);
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(0, 0, 0), 30f);
 
         if (transform.localScale.x < 200 )
         {
             transform.localScale += new Vector3(1, 1, 0);
         }
 
-        bomb_color.color += new Color(1 / 255f, 0 / 255f, 0 / 255f);
+        bomb_color.color += new Color(2 / 255f, 0 / 255f, 0 / 255f);
 
         if (Manager.time > 75)
         {
@@ -250,7 +242,7 @@ public class Bomb : MonoBehaviour
 
     public IEnumerator Finish_Move(int finish_Time)
     {
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, 50f);
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, 60f);
 
         if (transform.localPosition == target)
         {

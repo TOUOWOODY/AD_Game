@@ -20,7 +20,7 @@ public class AD_Skip : MonoBehaviour
 
     public IEnumerator bomb_Move0()
     {
-        transform.localScale += new Vector3(4, 2,0);
+        transform.localScale += new Vector3(10, 5,0);
 
         if (transform.localScale.x > 1100)
         {
@@ -34,11 +34,11 @@ public class AD_Skip : MonoBehaviour
 
     public IEnumerator bomb_Move1()
     {
-        transform.Translate(0,-0.05f, 0);
+        transform.Translate(0,-0.1f, 0);
 
         if (transform.localPosition.y < -500)
         {
-            transform.Translate(0, -0.5f, 0);
+            transform.Translate(0, -1f, 0);
         }
 
         if(transform.localPosition.y < -900)
@@ -56,7 +56,7 @@ public class AD_Skip : MonoBehaviour
 
     public IEnumerator bomb_Move2()
     {
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, target , 30f);
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, target , 50f);
 
         if (transform.localPosition == target)
         {
@@ -73,7 +73,7 @@ public class AD_Skip : MonoBehaviour
 
     public IEnumerator bomb_Move3()
     {
-        transform.localScale -= new Vector3(10, 5, 0);
+        transform.localScale -= new Vector3(20, 10, 0);
 
         if (transform.localScale.x < 500)
         {
@@ -88,7 +88,7 @@ public class AD_Skip : MonoBehaviour
             yield break;
         }
 
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, 10f);
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, 20f);
 
         yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move3());
@@ -97,7 +97,7 @@ public class AD_Skip : MonoBehaviour
 
     public IEnumerator bomb_Move4()
     {
-        transform.localScale -= new Vector3(4, 2, 0);
+        transform.localScale -= new Vector3(10, 5, 0);
 
         if (this.transform.localScale.x < 10)
         {
