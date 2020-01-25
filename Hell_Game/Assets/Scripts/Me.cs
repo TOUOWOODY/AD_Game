@@ -23,7 +23,8 @@ public class Me : MonoBehaviour
     {
         if(collision.name == "Bomb" || collision.name == "AD" || collision.name == "AD2" || collision.name == "AD_SKIP")
         {
-            //Ingame.Instance.Start_Panel.SetActive(true);
+            Ingame.Instance.admob.AdsShow();
+            Ingame.Instance.Start_Panel.SetActive(true);
         }
         for(int i = 0; i < 4; i++)
         {

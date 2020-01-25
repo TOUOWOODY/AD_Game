@@ -19,7 +19,6 @@ public class AD2 : MonoBehaviour
     }
     private void Start()
     {
-        StartCoroutine(scale_up());
     }
     void FixedUpdate()
     {
@@ -28,6 +27,11 @@ public class AD2 : MonoBehaviour
         {
             Delete_Shot();
         }
+        if (Ingame.Instance.Start_Panel.activeSelf || Ingame.Instance.Success_Panel.activeSelf)
+        {
+            Delete_Shot();
+        }
+
         rotation += (Time.deltaTime * 500f);
         transform.localRotation = Quaternion.Euler(0, 0, rotation);
     }
@@ -47,7 +51,7 @@ public class AD2 : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    IEnumerator scale_up()
+    public IEnumerator scale_up()
     {
         transform.localScale += new Vector3(10f, 10f, 0);
 

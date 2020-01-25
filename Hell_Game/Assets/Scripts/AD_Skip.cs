@@ -9,6 +9,10 @@ public class AD_Skip : MonoBehaviour
 
 
     public GameObject Bomb;
+
+    public GameObject Start_Panel;
+    public GameObject Success_Panel;
+
     public void Initialize()
     {
         Manager = Ingame.Instance;
@@ -25,6 +29,11 @@ public class AD_Skip : MonoBehaviour
         if (transform.localScale.x > 1100)
         {
             StartCoroutine(bomb_Move1());
+            yield break;
+        }
+
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
             yield break;
         }
 
@@ -50,6 +59,11 @@ public class AD_Skip : MonoBehaviour
             yield break;
         }
 
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
+            yield break;
+        }
+
         yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move1());
     }
@@ -64,6 +78,11 @@ public class AD_Skip : MonoBehaviour
 
             target = new Vector3(0, 0, 0);
             StartCoroutine(bomb_Move3());
+            yield break;
+        }
+
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
             yield break;
         }
 
@@ -88,6 +107,11 @@ public class AD_Skip : MonoBehaviour
             yield break;
         }
 
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
+            yield break;
+        }
+
         transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, 20f);
 
         yield return new WaitForSeconds(0.005f);
@@ -104,6 +128,12 @@ public class AD_Skip : MonoBehaviour
             this.gameObject.SetActive(false);
             yield break;
         }
+
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
+            yield break;
+        }
+
         yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move4());
     }
@@ -127,6 +157,12 @@ public class AD_Skip : MonoBehaviour
         {
             yield break;
         }
+
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
+            yield break;
+        }
+
         yield return new WaitForSeconds(speed);
 
         StartCoroutine(Attact0(finsh_Time, speed));

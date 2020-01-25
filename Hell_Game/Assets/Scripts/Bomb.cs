@@ -16,6 +16,9 @@ public class Bomb : MonoBehaviour
     private GameObject AD_Skip;
 
     private SpriteRenderer bomb_color;
+
+    public GameObject Start_Panel;
+    public GameObject Success_Panel;
     void Start()
     {
         Manager = Ingame.Instance;
@@ -38,6 +41,11 @@ public class Bomb : MonoBehaviour
         {
             stop = false;
             StartCoroutine(bomb_Move1());
+            yield break;
+        }
+
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
             yield break;
         }
 
@@ -72,6 +80,10 @@ public class Bomb : MonoBehaviour
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(0,0,0), 20f);
         }
 
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
+            yield break;
+        }
         yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move1());
     }
@@ -89,6 +101,11 @@ public class Bomb : MonoBehaviour
         else if (Manager.time >= 12f)
         {
             StartCoroutine(bomb_Move4());
+            yield break;
+        }
+
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
             yield break;
         }
 
@@ -113,6 +130,11 @@ public class Bomb : MonoBehaviour
         else
         {
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, Ingame.Instance.Spot[2].transform.localPosition, 15f);
+        }
+
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
+            yield break;
         }
 
         yield return new WaitForSeconds(0.005f);
@@ -170,6 +192,10 @@ public class Bomb : MonoBehaviour
 
         transform.localPosition = Vector3.MoveTowards(transform.localPosition, Ingame.Instance.Me.transform.localPosition, 10f);
 
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
+            yield break;
+        }
 
         yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move5());
@@ -189,6 +215,11 @@ public class Bomb : MonoBehaviour
         if (transform.localPosition == Vector3.MoveTowards(transform.localPosition, new Vector3(0, 900, 0), 10f))
         {
             AD_Skip.GetComponent<AD_Skip>().Initialize();
+            yield break;
+        }
+
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
             yield break;
         }
 
@@ -216,6 +247,11 @@ public class Bomb : MonoBehaviour
             yield break;
         }
 
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
+            yield break;
+        }
+
         yield return new WaitForSeconds(0.005f);
         StartCoroutine(bomb_Move7());
     }
@@ -236,6 +272,11 @@ public class Bomb : MonoBehaviour
 
         }
 
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
+            yield break;
+        }
+
         yield return new WaitForSeconds(0.005f);
         StartCoroutine(Follow_Move(finish_Time));
     }
@@ -250,6 +291,13 @@ public class Bomb : MonoBehaviour
         }
 
         if (Manager.time > finish_Time)
+        {
+            Success_Panel.SetActive(true);
+            yield break;
+        }
+
+
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
         {
             yield break;
         }
@@ -279,6 +327,11 @@ public class Bomb : MonoBehaviour
         {
             yield break;
         }
+
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
+            yield break;
+        }
         yield return new WaitForSeconds(attack_speed);
 
         StartCoroutine(Attact0());
@@ -298,6 +351,11 @@ public class Bomb : MonoBehaviour
         }
 
         if((int)Ingame.Instance.time == 30)
+        {
+            yield break;
+        }
+
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
         {
             yield break;
         }
@@ -325,6 +383,11 @@ public class Bomb : MonoBehaviour
             yield break;
         }
 
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
+            yield break;
+        }
+
         yield return new WaitForSeconds(speed);
 
         StartCoroutine(Random_Attack(finish_Time, speed));
@@ -338,6 +401,8 @@ public class Bomb : MonoBehaviour
 
         ad2.GetComponent<AD2>().Enemy = Manager.Me.transform.localPosition;
 
+        StartCoroutine(ad2.GetComponent<AD2>().scale_up());
+
         if (!this.gameObject.activeSelf)
         {
             yield break;
@@ -347,6 +412,12 @@ public class Bomb : MonoBehaviour
         {
             yield break;
         }
+
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
+            yield break;
+        }
+
         yield return new WaitForSeconds(speed);
 
         StartCoroutine(Attact_AD2(finish_Time, speed));

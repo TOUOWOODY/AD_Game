@@ -2,39 +2,42 @@
 using UnityEngine;
 using GoogleMobileAds.Api;
 
-public class AdMob : MonoBehaviour
+public class Admob : MonoBehaviour
 {
+    private BannerView bannerView;
     private InterstitialAd interstitial;
 
-    public void Start()
+    // Start is called before the first frame update
+    void Start()
     {
 #if UNITY_ANDROID
-        string appId = "ca-app-pub-3940256099942544~3347511713";
-#elif UNITY_IPHONE
-            string appId = "ca-app-pub-3940256099942544~1458002511";
+        string appId = "ca-app-pub-5460648143832418~6786200121";
 #else
-            string appId = "unexpected_platform";
+        string appId = "unexpected_platform";
 #endif
-        // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(appId);
 
-        this.RequestInterstitial();
+        RequestInterstitial();
+
     }
 
-    // 전면 광고 
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+
     private void RequestInterstitial()
     {
 #if UNITY_ANDROID
-        string adUnitId = "ca-app-pub-3940256099942544/1033173712"; //테스트 아이디 
-#elif UNITY_IPHONE
-        //string adUnitId = "ca-app-pub-3940256099942544/4411468910";
+        string adUnitId = "ca-app-pub-3940256099942544/1033173712";
 #else
         string adUnitId = "unexpected_platform";
 #endif
 
         // Initialize an InterstitialAd.
         this.interstitial = new InterstitialAd(adUnitId);
-        // 전면광고
         // Called when an ad request has successfully loaded.
         this.interstitial.OnAdLoaded += HandleOnAdLoaded;
         // Called when an ad request failed to load.
@@ -45,11 +48,13 @@ public class AdMob : MonoBehaviour
         this.interstitial.OnAdClosed += HandleOnAdClosed;
         // Called when the ad click caused the user to leave the application.
         this.interstitial.OnAdLeavingApplication += HandleOnAdLeavingApplication;
-
         // Create an empty ad request.
         AdRequest request = new AdRequest.Builder().Build();
         // Load the interstitial with the request.
         this.interstitial.LoadAd(request);
+
+
+
     }
     public void HandleOnAdLoaded(object sender, EventArgs args)
     {
@@ -58,7 +63,7 @@ public class AdMob : MonoBehaviour
 
     public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
-        MonoBehaviour.print("interstitial Failed : "
+        MonoBehaviour.print("HandleFailedToReceiveAd event received with message: "
                             + args.Message);
     }
 
@@ -77,8 +82,7 @@ public class AdMob : MonoBehaviour
     {
         MonoBehaviour.print("HandleAdLeavingApplication event received");
     }
-
-    public void ShowInterstitial()
+    public void AdsShow()
     {
         if (this.interstitial.IsLoaded())
         {
@@ -86,8 +90,8 @@ public class AdMob : MonoBehaviour
         }
         else
         {
-            Debug.Log("NOT Loaded Interstitial");
             RequestInterstitial();
         }
     }
 }
+

@@ -23,6 +23,11 @@ public class AD : MonoBehaviour
         {
             Delete_Shot();
         }
+
+        if (Ingame.Instance.Start_Panel.activeSelf || Ingame.Instance.Success_Panel.activeSelf)
+        {
+            Delete_Shot();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

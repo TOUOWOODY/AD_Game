@@ -15,11 +15,20 @@ public class Ingame : MonoBehaviour
     private Text time_Text;
 
     public GameObject Start_Panel;
+    public GameObject Success_Panel;
 
     public GameObject AD_Parent;
     public Object_Pooling object_Pooling;
 
     public List<GameObject> Spot = new List<GameObject>();
+
+    public Admob admob;
+
+
+    public GameObject Bomb;
+    public GameObject AD_Skip;
+
+
 
     public static Ingame Instance
     {
@@ -48,8 +57,28 @@ public class Ingame : MonoBehaviour
 
     private void FixedUpdate()
     {
-        time += Time.deltaTime;
+        if(!Start_Panel.activeSelf && !Success_Panel.activeSelf)
+        {
+            time += Time.deltaTime;
 
+            time_Text.text = (int)time + "s";
+        }
+    }
+
+    public void Start_Btn()
+    {
+        Start_Panel.SetActive(false);
+        Success_Panel.SetActive(false);
+        AD_Skip.transform.localPosition = new Vector3(0, 0, 0);
+        AD_Skip.SetActive(false);
+
+        Me.transform.localPosition = new Vector3(0, -100, 0);
+        Bomb.transform.localPosition = new Vector3(0, 800, 0);
+        Bomb.transform.localScale = new Vector2(100, 100);
+
+        time = 0;
         time_Text.text = (int)time + "s";
+
+        StartCoroutine(Bomb.GetComponent<Bomb>().bomb_Move0());
     }
 }
