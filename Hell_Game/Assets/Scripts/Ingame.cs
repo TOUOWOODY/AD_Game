@@ -52,6 +52,7 @@ public class Ingame : MonoBehaviour
 
     private void Initialize()
     {
+        Start_Panel.SetActive(true);
         object_Pooling.Initialized();
     }
 

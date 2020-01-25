@@ -16,6 +16,10 @@ public class Me : MonoBehaviour
     private bool right_wall = false;
     private bool left_wall = false;
 
+
+    public GameObject Start_Panel;
+    public GameObject Success_Panel;
+
     [SerializeField]
     private List<GameObject> wall = new List<GameObject>();
 
@@ -24,7 +28,7 @@ public class Me : MonoBehaviour
         if(collision.name == "Bomb" || collision.name == "AD" || collision.name == "AD2" || collision.name == "AD_SKIP")
         {
             Ingame.Instance.admob.AdsShow();
-            Ingame.Instance.Start_Panel.SetActive(true);
+            //Ingame.Instance.Start_Panel.SetActive(true);
         }
         for(int i = 0; i < 4; i++)
         {
@@ -80,6 +84,10 @@ public class Me : MonoBehaviour
         {
             yield break;
         }
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
+            yield break;
+        }
         transform.Translate(0, 0.1f, 0);
         yield return new WaitForSeconds(0.005f);
         StartCoroutine(UP());
@@ -91,6 +99,10 @@ public class Me : MonoBehaviour
         {
             yield break;
         }
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
+            yield break;
+        }
         transform.Translate(0, -0.1f, 0);
         yield return new WaitForSeconds(0.005f);
         StartCoroutine(DOWN());
@@ -99,6 +111,10 @@ public class Me : MonoBehaviour
     IEnumerator RIGHT()
     {
         if (!right || right_wall)
+        {
+            yield break;
+        }
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
         {
             yield break;
         }
@@ -114,7 +130,10 @@ public class Me : MonoBehaviour
         {
             yield break;
         }
-
+        if (Start_Panel.activeSelf || Success_Panel.activeSelf)
+        {
+            yield break;
+        }
         transform.Translate(-0.1f, 0, 0);
 
         yield return new WaitForSeconds(0.005f);

@@ -31,7 +31,7 @@ public class Admob : MonoBehaviour
     private void RequestInterstitial()
     {
 #if UNITY_ANDROID
-        string adUnitId = "ca-app-pub-3940256099942544/1033173712";
+        string adUnitId = "ca-app-pub-5460648143832418/5261558985";
 #else
         string adUnitId = "unexpected_platform";
 #endif
